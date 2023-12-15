@@ -1,16 +1,17 @@
 function startTest() {
   document.getElementById('results').innerHTML = 'Testing...'
-  let numberOfTests = 3 // Number of tests to average
+  let numberOfTests = 5 // Number of tests to average
   let completedTests = 0
   let totalSpeed = 0
 
   function testDownload() {
-    const startTime = new Date().getTime()
+    const startTime = performance.now()
+    const cacheBuster = '?nocache=' + Math.random() // Cache-busting query string
 
-    fetch('/largefile.dat')
+    fetch('/largefile.dat' + cacheBuster)
       .then((response) => response.blob())
       .then((data) => {
-        const endTime = new Date().getTime()
+        const endTime = performance.now()
         const duration = (endTime - startTime) / 1000 // Duration in seconds
         const bitsLoaded = data.size * 8 // Total bits loaded
         const speedBps = bitsLoaded / duration // Speed in bits per second
@@ -18,7 +19,7 @@ function startTest() {
         completedTests++
 
         if (completedTests < numberOfTests) {
-          testDownload() // Run next test
+          setTimeout(testDownload, 1000) // Wait 1 second before next test
         } else {
           const averageSpeedBps = totalSpeed / numberOfTests
           const averageSpeedMbps = (averageSpeedBps / (1024 * 1024)).toFixed(2) // Convert to Mbps
