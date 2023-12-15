@@ -1,0 +1,11 @@
+#startButton {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#results {
+  margin-top: 20px;
+}
